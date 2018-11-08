@@ -11,18 +11,26 @@ func main() {
 
 	li, err := net.Listen("tcp", ":8080")
 
+	fmt.Println("Started")
+
 	if err != nil {
 		log.Panic(err)
 	}
+
+	defer li.Close()
+
+	fmt.Println("Started")
 
 	for {
 		conn, err := li.Accept()
 
 		if err != nil {
 			log.Println(err)
+			continue
 
-			go handle(conn)
 		}
+
+		go handle(conn)
 	}
 
 }
@@ -30,7 +38,11 @@ func main() {
 func handle(conn net.Conn) {
 	scanner := bufio.NewScanner(conn)
 
+	fmt.Println("Started")
+
 	for scanner.Scan() {
+
+		fmt.Println("Running")
 		ln := scanner.Text()
 
 		fmt.Println(ln)
